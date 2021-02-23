@@ -1,17 +1,13 @@
 import React,{useState,useRef} from 'react';
 import './weather.css';
-import axios from 'axios'
-
-
+import axios from 'axios';
 
 const Weather=() => {
-
   const Api_Key="75ced55da7174c4764fbb1897da6af5b";
   const[weather,setWeather]=useState({});
   const[query,setQuery]=useState('');
   const [errorMessage, setErrorMessage] = useState("")
   const inputRef = useRef(null)
-//----------------------------------------------
 
 const weatherInfo=(d)=>{
 const months=["January", "February","March", "April", "May", "June", "July",
@@ -27,8 +23,6 @@ const year=d.getFullYear();
 return `${day} ${date} ${month} ${year}`
 
 }
-
-//---------------
 const searching = ()=> {
   
  axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${Api_Key}`)
@@ -42,15 +36,9 @@ const searching = ()=> {
 
  })
  .catch(error=>{
-  console.log(error.message)
   setErrorMessage(" Sorry not found such name.Please write the name correctly")
  })
- console.log(query)
-
-
-
-};
- console.log(errorMessage)
+}
 
 const submitInput=(e)=>{
   inputRef.current.focus()
@@ -58,11 +46,7 @@ const submitInput=(e)=>{
   setQuery("")
   setErrorMessage("")
   searching();
- 
 }
-
-
-//---------------------------------------------
 
   return(
 
