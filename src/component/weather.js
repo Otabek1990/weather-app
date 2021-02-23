@@ -1,14 +1,16 @@
-import React,{useState} from 'react';
+import React,{useState,useRef} from 'react';
 import './weather.css';
+import axios from 'axios'
 
 
 
 const Weather=() => {
 
   const Api_Key="75ced55da7174c4764fbb1897da6af5b";
-  //const[search,setSearch]=useState("");
   const[weather,setWeather]=useState({});
   const[query,setQuery]=useState('');
+  const [errorMessage, setErrorMessage] = useState("")
+  const inputRef = useRef(null)
 //----------------------------------------------
 
 const weatherInfo=(d)=>{
@@ -27,18 +29,38 @@ return `${day} ${date} ${month} ${year}`
 }
 
 //---------------
-const searching = event => {
-    if(event.key==="Enter") {
- fetch(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${Api_Key}`)
- .then(res=> res.json())
- .then(result=>{
-  setWeather(result);
-  setQuery("");
- 
- });
-  }
+const searching = ()=> {
+  
+ axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${Api_Key}`)
+
+ .then(responce=>{
+
+  setWeather(responce.data);
+  console.log(responce.data);
+  console.log(query)
+  setQuery('');
+
+ })
+ .catch(error=>{
+  console.log(error.message)
+  setErrorMessage(" Sorry not found such name.Please write the name correctly")
+ })
+ console.log(query)
+
+
 
 };
+ console.log(errorMessage)
+
+const submitInput=(e)=>{
+  inputRef.current.focus()
+  e.preventDefault()
+  setQuery("")
+  setErrorMessage("")
+  searching();
+ 
+}
+
 
 //---------------------------------------------
 
@@ -48,17 +70,23 @@ const searching = event => {
 
   <main>
     <div className="search-box">
+    <form 
+         onSubmit={submitInput}
+        >
      <input 
+      ref={inputRef}
       type="text"
       className="search-bar"
        placeholder="Enter the name of city..."
        onChange={(e)=>setQuery(e.target.value)}
        value={query}
-       onKeyPress={searching}
        />
+       </form>
       
     </div>
-  {(typeof weather.main !="undefined"  ) && (typeof weather.sys!="undefined" )?(
+  { errorMessage ? (
+ <h1 className="error_msg">{errorMessage}</h1>
+ ):(typeof weather.main !="undefined"  ) && (typeof weather.sys!="undefined" )  && errorMessage==="" ? (
 
     <div className="location">
       <div className="location-name">{weather.name}, {weather.sys.country}</div>
@@ -67,7 +95,9 @@ const searching = event => {
        <div className="location-infos">{weather.main.temp-273<10? "Cold": weather.main.temp-273<25? "Warm":"Hot"}</div>
 
 
-    </div>): ("") }
+    </div>
+):null
+ }
   </main>
 
  </div>

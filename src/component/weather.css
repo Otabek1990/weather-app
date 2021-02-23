@@ -92,3 +92,38 @@ font-weight: 700;
 font-family: sans-serif;
 text-shadow: 3px 4px rgba(45,45,55,0.3)
 }
+
+.error_msg{
+
+  color: red;
+  font-family: cursive;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+   position: absolute;
+    height: 50px;
+    top: 20%;
+    left: 20%;
+    margin-left: -90px; /* margin is -0.5 * dimension */
+    margin-top: -25px;
+
+}
+@media only screen and (max-width: 800px){
+  .error_msg{
+
+font-size: 20px;
+  color: red;
+  font-family: cursive;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+   position: absolute;
+    height: 50px;
+    top: 20%;
+    left: 20%;
+    margin-left: -60px; /* margin is -0.5 * dimension */
+    margin-top: -25px;
+
+}
+
+}
